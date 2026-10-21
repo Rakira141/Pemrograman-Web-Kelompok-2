@@ -1,0 +1,693 @@
+/* ==============================================================================
+   TEMA EDITORIAL ACADEMIC & WARM SAGE GREEN
+   Terinspirasi dari desain portofolio: Palet Warm Cream, Sage Green & Deep Espresso
+   ============================================================================== */
+
+:root {
+  /* Default: Warm Deep Espresso Dark Mode */
+  --bg-body: #1c1b18;
+  --bg-card: #252420;
+  --bg-card-hover: #2e2d27;
+  --bg-card-subtle: #2c2a25;
+  --border-card: #3d3a33;
+  --text-main: #f5efe4;
+  --text-muted: #b3ab98;
+  --text-sub: #c7bfab;
+  
+  /* Aksen Sage Green & Natural Earthy */
+  --accent-primary: #7da377;
+  --accent-primary-hover: #92b58c;
+  --accent-soft: rgba(125, 163, 119, 0.2);
+  --accent-amber: #e5b768;
+  --accent-terracotta: #e08874;
+
+  /* Header Gradasi Menonjol (Dark Forest / Espresso Sage) */
+  --header-bg: linear-gradient(135deg, #1b231a 0%, #293826 50%, #1e281d 100%);
+  --header-border: rgba(125, 163, 119, 0.3);
+
+  /* Tabel Dark Mode */
+  --table-bg: transparent;
+  --table-border: #3d3a33;
+  --table-hover: rgba(125, 163, 119, 0.12);
+  --table-head-bg: #2c2a24;
+  --table-head-text: #f5efe4;
+
+  /* Form & UI Elements */
+  --input-bg: #2c2a24;
+  --input-border: #47443b;
+  --scrollbar-thumb: #47443b;
+  --scrollbar-track: #1c1b18;
+
+  /* Radius Kartu Elegan 20px - 24px */
+  --card-radius: 22px;
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Light Mode: Warm Paper Cream & Forest Sage */
+body.light-mode {
+  --bg-body: #f8f3e8;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-card-subtle: #efe6d2;
+  --border-card: #e4dbc4;
+  --text-main: #2b2a26;
+  --text-muted: #756e5c;
+  --text-sub: #46613f;
+
+  /* Aksen Sage Green & Warm Natural */
+  --accent-primary: #5c7a57;
+  --accent-primary-hover: #46613f;
+  --accent-soft: #dce6d8;
+  --accent-amber: #c8963e;
+  --accent-terracotta: #b85d43;
+
+  /* Header Gradasi Editorial Light Mode (Forest to Sage) */
+  --header-bg: linear-gradient(135deg, #384f33 0%, #46613f 50%, #5c7a57 100%);
+  --header-border: rgba(255, 255, 255, 0.25);
+
+  /* Tabel Light Mode */
+  --table-bg: transparent;
+  --table-border: #e4dbc4;
+  --table-hover: rgba(92, 122, 87, 0.08);
+  --table-head-bg: #efe6d2;
+  --table-head-text: #2b2a26;
+
+  /* Form & UI Elements */
+  --input-bg: #ffffff;
+  --input-border: #e4dbc4;
+  --scrollbar-thumb: #d5cbaf;
+  --scrollbar-track: #f8f3e8;
+  --card-shadow: 0 6px 24px rgba(43, 42, 38, 0.06);
+}
+
+/* ==============================================================================
+   DASAR & TIPOGRAFI EDITORIAL
+   ============================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Tipografi Serif Editorial untuk Judul */
+h1, h2, h3, h4, h5, h6, .serif-heading, .navbar-brand {
+  font-family: Georgia, "Times New Roman", Cambria, serif;
+  letter-spacing: -0.2px;
+}
+
+em {
+  font-family: Georgia, serif;
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+body.light-mode em {
+  color: #5c7a57;
+}
+
+/* Section Label (Tracking Lebar Khas Portofolio) */
+.section-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--accent-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ==============================================================================
+   TOP NAVBAR EDITORIAL
+   ============================================================================== */
+.navbar-editorial {
+  background-color: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-card) !important;
+  padding: 14px 24px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-editorial .navbar-brand {
+  color: var(--text-main) !important;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.navbar-editorial .navbar-text {
+  color: var(--text-muted) !important;
+  font-family: system-ui, sans-serif;
+}
+
+/* ==============================================================================
+   HERO BANNER
+   ============================================================================== */
+.hero-banner {
+  background: var(--header-bg) !important;
+  border-radius: var(--card-radius) !important;
+  border: 1px solid var(--header-border) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35) !important;
+  transition: background 0.3s ease;
+}
+
+.hero-banner h2 {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.hero-banner em {
+  color: #dce6d8 !important;
+}
+
+.hero-banner label {
+  color: #ffffff !important;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.hero-banner .form-select {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  border-radius: 30px !important;
+  padding: 7px 38px 7px 18px;
+  font-weight: 600;
+}
+
+body.light-mode .hero-banner .form-select {
+  background-color: #ffffff !important;
+  color: #384f33 !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+select option, .form-select option {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  font-weight: 500;
+  padding: 8px;
+}
+
+body.light-mode select option, body.light-mode .form-select option {
+  background-color: #ffffff !important;
+  color: #2b2a26 !important;
+}
+
+/* ==============================================================================
+   KOTAK / CARD (ROUNDED ELEGAN 22px & NATURAL SHADOW)
+   ============================================================================== */
+.card, .card-kpi {
+  background-color: var(--bg-card) !important;
+  border-radius: var(--card-radius) !important;
+  border: 1px solid var(--border-card) !important;
+  box-shadow: var(--card-shadow) !important;
+  color: var(--text-main);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover, .card-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-mode .card:hover, body.light-mode .card-kpi:hover {
+  box-shadow: 0 12px 28px rgba(43, 42, 38, 0.1) !important;
+}
+
+/* KPI Card Typography */
+.kpi-label {
+  color: var(--text-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.kpi-subtext, 
+.card-kpi small, 
+.card-kpi .small, 
+#kMaxName, 
+#kMinName,
+#kGrowthName {
+  color: var(--text-muted) !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+}
+
+/* Warna Angka Metrik Bergaya Editorial */
+.text-kpi-total { color: var(--accent-primary) !important; }
+.text-kpi-avg   { color: #5c7a57 !important; }
+.text-kpi-max   { color: #46613f !important; }
+.text-kpi-min   { color: var(--accent-terracotta) !important; }
+.text-kpi-growth{ color: var(--accent-amber) !important; }
+
+body.dark-mode .text-kpi-avg   { color: #7da377 !important; }
+body.dark-mode .text-kpi-max   { color: #92b58c !important; }
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* ==============================================================================
+   KOTAK TEMUAN KUNCI / KEY INSIGHTS (DATA STORYTELLING)
+   ============================================================================== */
+.insights-box {
+  background: linear-gradient(135deg, rgba(41, 56, 38, 0.35) 0%, rgba(35, 34, 30, 0.8) 100%) !important;
+  border: 1px solid rgba(125, 163, 119, 0.3) !important;
+  border-left: 5px solid var(--accent-primary) !important;
+}
+
+body.light-mode .insights-box {
+  background: linear-gradient(135deg, #f8f3e8 0%, #efe6d2 100%) !important;
+  border: 1px solid #e4dbc4 !important;
+  border-left: 5px solid #5c7a57 !important;
+}
+
+.insight-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+body.light-mode .insight-pill {
+  background: #ffffff;
+  border-color: #e4dbc4;
+  box-shadow: 0 2px 10px rgba(43, 42, 38, 0.04);
+}
+
+/* Number Circle Badge (Diadaptasi dari Portofolio .skill-number & .experience-number) */
+.insight-number {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: Georgia, serif;
+}
+
+body.light-mode .insight-number {
+  background-color: #5c7a57;
+}
+
+/* ==============================================================================
+   TABEL & SCROLLBAR
+   ============================================================================== */
+.table-responsive {
+  border-radius: 18px;
+}
+
+.table {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: var(--text-main) !important;
+  --bs-table-border-color: var(--table-border) !important;
+  background-color: transparent !important;
+  color: var(--text-main) !important;
+  margin-bottom: 0;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: var(--text-main) !important;
+  border-bottom-color: var(--table-border) !important;
+  padding: 13px 16px;
+}
+
+.table thead th {
+  background-color: var(--table-head-bg) !important;
+  color: var(--table-head-text) !important;
+  border-bottom: 1px solid var(--table-border) !important;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+/* Header Tabel yang Dapat Diurutkan (Sortable) */
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.sortable-th:hover {
+  background-color: var(--table-hover) !important;
+  color: var(--accent-primary) !important;
+}
+
+.sortable-th .sort-icon {
+  font-size: 11px;
+  margin-left: 5px;
+  display: inline-block;
+  opacity: 0.4;
+  transition: all 0.2s ease;
+  font-weight: 800;
+}
+
+.sortable-th:hover .sort-icon {
+  opacity: 0.9;
+  color: var(--accent-primary);
+}
+
+.sortable-th.active-sort {
+  color: var(--accent-primary) !important;
+}
+
+.sortable-th.active-sort .sort-icon {
+  opacity: 1 !important;
+  color: var(--accent-primary) !important;
+  font-weight: 900;
+  transform: scale(1.15);
+}
+
+/* Badge Tahun (2024 / 2025) */
+.year-badge {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  font-weight: 700;
+  border-radius: 20px;
+  font-size: 11.5px;
+  padding: 3px 9px;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+body.light-mode .year-badge {
+  background-color: #efe6d2;
+  border-color: #e4dbc4;
+  color: #2b2a26;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+body.light-mode .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(43, 42, 38, 0.025) !important;
+}
+
+.table tbody tr:hover {
+  background-color: var(--table-hover) !important;
+}
+
+.table-responsive::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 6px;
+}
+
+/* ==============================================================================
+   BADGE KATEGORI & FILTER PILLS (PILL SHAPE 30px DARI PORTOFOLIO)
+   ============================================================================== */
+.badge-cat {
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 11.5px;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+.badge-st {
+  background-color: #5c7a57 !important;
+  color: #ffffff !important;
+}
+.badge-t  {
+  background-color: #c8963e !important;
+  color: #ffffff !important;
+}
+.badge-s  {
+  background-color: #b85d43 !important;
+  color: #ffffff !important;
+}
+
+/* Filter Tabs / Pills */
+.filter-pill-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
+  color: var(--text-muted);
+  border-radius: 30px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill-btn:hover, .filter-pill-btn.active {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: #ffffff !important;
+}
+
+body.light-mode .filter-pill-btn {
+  background: #efe6d2;
+  border-color: #e4dbc4;
+  color: #756e5c;
+}
+
+body.light-mode .filter-pill-btn:hover, body.light-mode .filter-pill-btn.active {
+  background: #5c7a57 !important;
+  border-color: #5c7a57 !important;
+  color: #ffffff !important;
+}
+
+/* ==============================================================================
+   TOMBOL EKSPOR & AKSI (PILL SHAPE 30px)
+   ============================================================================== */
+.btn-action-tool {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action-tool:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+body.light-mode .btn-action-tool {
+  background: #efe6d2;
+  border-color: #e4dbc4;
+  color: #2b2a26;
+}
+
+body.light-mode .btn-action-tool:hover {
+  background: #5c7a57;
+  border-color: #5c7a57;
+  color: #ffffff;
+}
+
+/* Input Search Box */
+.form-control-editorial {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 30px !important;
+  padding: 7px 16px !important;
+  font-size: 13px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control-editorial:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
+}
+
+/* ==============================================================================
+   MODAL DETAIL WILAYAH (DRILL-DOWN MODAL)
+   ============================================================================== */
+.modal-content-custom {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 24px !important;
+  border: 1px solid var(--border-card) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5) !important;
+  overflow: hidden;
+}
+
+.modal-header-custom {
+  border-bottom: 1px solid var(--border-card);
+  padding: 20px 26px;
+  background-color: var(--bg-card-subtle);
+}
+
+.modal-header-custom .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.8;
+}
+body.light-mode .modal-header-custom .btn-close {
+  filter: none;
+  opacity: 0.6;
+}
+.modal-header-custom .btn-close:hover {
+  opacity: 1;
+}
+
+.modal-body-custom {
+  padding: 26px;
+}
+
+.detail-metric-card {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+body.light-mode .detail-metric-card {
+  background: #efe6d2;
+  border-color: #e4dbc4;
+}
+
+/* ==============================================================================
+   PETA LEAFLET
+   ============================================================================== */
+#mapJateng {
+  border-radius: 18px;
+  border: 1px solid var(--border-card);
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--border-card) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
+  padding: 4px;
+}
+
+.leaflet-popup-tip {
+  background: var(--bg-card) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+.leaflet-container {
+  background-color: var(--bg-card) !important;
+  font-family: inherit;
+}
+
+/* ==============================================================================
+   FOOTER & TOGGLE BUTTON
+   ============================================================================== */
+footer {
+  background-color: var(--bg-card) !important;
+  color: var(--text-muted) !important;
+  border-top: 1px solid var(--border-card) !important;
+  transition: background-color 0.3s ease;
+  font-size: 13px;
+}
+
+.btn-theme-toggle {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  border-radius: 30px;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.btn-theme-toggle:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+body.light-mode .btn-theme-toggle {
+  background: #efe6d2;
+  border-color: #e4dbc4;
+  color: #2b2a26;
+}
+
+body.light-mode .btn-theme-toggle:hover {
+  background: #5c7a57;
+  color: #ffffff;
+}
+
+/* ==============================================================================
+   PRINT MEDIA QUERY (CETAK LAPORAN BERSIH)
+   ============================================================================== */
+@media print {
+  header, footer, #themeToggleBtn, .btn-action-tool, .filter-pill-btn, #yearFilter, #mapMetric, #searchTable {
+    display: none !important;
+  }
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .card, .card-kpi, .hero-banner {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+  .table {
+    color: #000000 !important;
+  }
+}
