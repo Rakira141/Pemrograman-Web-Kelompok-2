@@ -1,0 +1,455 @@
+import pandas as pd
+import json
+
+# ==============================================================================
+# 1. DATABASE DATASET RESMI BPS JAWA TENGAH (DOMAIN: 3300) TAHUN 2024 & 2025
+# ==============================================================================
+# Diambil langsung dari WebAPI Resmi Badan Pusat Statistik (BPS) Jawa Tengah:
+# - IPM: var/2034
+# - UHH: var/2035
+# - HLS: var/2413
+# - RLS: var/2414
+# - Pengeluaran: var/2415
+
+list_data = [
+    # TAHUN 2025
+    {"Wilayah":"Kota Salatiga","Tahun":2025,"IPM":86.23,"UHH":78.75,"HLS":15.47,"RLS":11.49,"Pengeluaran":17523},
+    {"Wilayah":"Kota Semarang","Tahun":2025,"IPM":85.80,"UHH":78.72,"HLS":15.58,"RLS":11.11,"Pengeluaran":17402},
+    {"Wilayah":"Kota Surakarta","Tahun":2025,"IPM":84.92,"UHH":78.18,"HLS":15.08,"RLS":11.26,"Pengeluaran":16883},
+    {"Wilayah":"Kota Magelang","Tahun":2025,"IPM":82.92,"UHH":78.03,"HLS":14.84,"RLS":11.44,"Pengeluaran":14023},
+    {"Wilayah":"Kab. Sukoharjo","Tahun":2025,"IPM":79.90,"UHH":78.21,"HLS":14.03,"RLS":10.02,"Pengeluaran":13238},
+    {"Wilayah":"Kab. Klaten","Tahun":2025,"IPM":78.68,"UHH":77.69,"HLS":13.44,"RLS":9.30,"Pengeluaran":13948},
+    {"Wilayah":"Kab. Karanganyar","Tahun":2025,"IPM":78.67,"UHH":78.21,"HLS":13.74,"RLS":9.27,"Pengeluaran":13244},
+    {"Wilayah":"Kota Tegal","Tahun":2025,"IPM":77.95,"UHH":75.30,"HLS":13.26,"RLS":9.29,"Pengeluaran":14801},
+    {"Wilayah":"Kab. Kudus","Tahun":2025,"IPM":77.94,"UHH":77.21,"HLS":13.49,"RLS":9.51,"Pengeluaran":12842},
+    {"Wilayah":"Kota Pekalongan","Tahun":2025,"IPM":77.76,"UHH":75.10,"HLS":12.98,"RLS":9.35,"Pengeluaran":14988},
+    {"Wilayah":"Kab. Boyolali","Tahun":2025,"IPM":76.95,"UHH":76.76,"HLS":12.90,"RLS":8.41,"Pengeluaran":14594},
+    {"Wilayah":"Kab. Semarang","Tahun":2025,"IPM":76.40,"UHH":76.45,"HLS":13.23,"RLS":8.17,"Pengeluaran":13923},
+    {"Wilayah":"Kab. Sragen","Tahun":2025,"IPM":76.38,"UHH":76.48,"HLS":13.21,"RLS":7.89,"Pengeluaran":14461},
+    {"Wilayah":"Kab. Purworejo","Tahun":2025,"IPM":75.93,"UHH":76.06,"HLS":13.58,"RLS":8.74,"Pengeluaran":12085},
+    {"Wilayah":"Kab. Banyumas","Tahun":2025,"IPM":75.44,"UHH":74.79,"HLS":13.53,"RLS":8.10,"Pengeluaran":13301},
+    {"Wilayah":"Kab. Demak","Tahun":2025,"IPM":75.08,"UHH":76.08,"HLS":13.37,"RLS":8.29,"Pengeluaran":12014},
+    {"Wilayah":"Kab. Kendal","Tahun":2025,"IPM":75.07,"UHH":74.96,"HLS":13.01,"RLS":7.97,"Pengeluaran":13721},
+    {"Wilayah":"Kab. Pati","Tahun":2025,"IPM":74.98,"UHH":76.83,"HLS":13.08,"RLS":8.09,"Pengeluaran":12186},
+    {"Wilayah":"Kab. Jepara","Tahun":2025,"IPM":74.90,"UHH":76.49,"HLS":12.87,"RLS":8.28,"Pengeluaran":12242},
+    {"Wilayah":"Kab. Cilacap","Tahun":2025,"IPM":73.45,"UHH":75.30,"HLS":12.70,"RLS":7.65,"Pengeluaran":12371},
+    {"Wilayah":"Kab. Wonogiri","Tahun":2025,"IPM":73.42,"UHH":77.30,"HLS":12.76,"RLS":7.85,"Pengeluaran":10938},
+    {"Wilayah":"Kab. Rembang","Tahun":2025,"IPM":73.40,"UHH":75.29,"HLS":12.50,"RLS":7.89,"Pengeluaran":12189},
+    {"Wilayah":"Kab. Kebumen","Tahun":2025,"IPM":73.17,"UHH":75.56,"HLS":13.42,"RLS":7.89,"Pengeluaran":10658},
+    {"Wilayah":"Kab. Magelang","Tahun":2025,"IPM":73.09,"UHH":74.93,"HLS":12.83,"RLS":8.04,"Pengeluaran":11343},
+    {"Wilayah":"Kab. Grobogan","Tahun":2025,"IPM":72.94,"UHH":75.57,"HLS":12.58,"RLS":7.51,"Pengeluaran":11991},
+    {"Wilayah":"Kab. Pekalongan","Tahun":2025,"IPM":72.71,"UHH":74.59,"HLS":12.63,"RLS":7.50,"Pengeluaran":12185},
+    {"Wilayah":"Kab. Temanggung","Tahun":2025,"IPM":72.52,"UHH":76.16,"HLS":12.63,"RLS":7.61,"Pengeluaran":10995},
+    {"Wilayah":"Kab. Tegal","Tahun":2025,"IPM":72.36,"UHH":74.62,"HLS":12.97,"RLS":7.37,"Pengeluaran":11498},
+    {"Wilayah":"Kab. Blora","Tahun":2025,"IPM":72.35,"UHH":75.23,"HLS":12.83,"RLS":7.45,"Pengeluaran":11240},
+    {"Wilayah":"Kab. Purbalingga","Tahun":2025,"IPM":71.71,"UHH":74.48,"HLS":12.11,"RLS":7.37,"Pengeluaran":11949},
+    {"Wilayah":"Kab. Batang","Tahun":2025,"IPM":71.70,"UHH":75.35,"HLS":12.18,"RLS":7.35,"Pengeluaran":11424},
+    {"Wilayah":"Kab. Wonosobo","Tahun":2025,"IPM":71.50,"UHH":74.56,"HLS":12.05,"RLS":6.91,"Pengeluaran":12552},
+    {"Wilayah":"Kab. Brebes","Tahun":2025,"IPM":71.18,"UHH":74.40,"HLS":12.66,"RLS":6.61,"Pengeluaran":11853},
+    {"Wilayah":"Kab. Banjarnegara","Tahun":2025,"IPM":70.61,"UHH":74.86,"HLS":12.04,"RLS":7.10,"Pengeluaran":10992},
+    {"Wilayah":"Kab. Pemalang","Tahun":2025,"IPM":69.47,"UHH":74.55,"HLS":12.03,"RLS":6.69,"Pengeluaran":10521},
+    
+    # TAHUN 2024
+    {"Wilayah":"Kota Salatiga","Tahun":2024,"IPM":85.72,"UHH":78.27,"HLS":15.46,"RLS":11.48,"Pengeluaran":17096},
+    {"Wilayah":"Kota Semarang","Tahun":2024,"IPM":85.24,"UHH":78.23,"HLS":15.57,"RLS":11.05,"Pengeluaran":16990},
+    {"Wilayah":"Kota Surakarta","Tahun":2024,"IPM":84.41,"UHH":77.91,"HLS":15.07,"RLS":11.25,"Pengeluaran":16291},
+    {"Wilayah":"Kota Magelang","Tahun":2024,"IPM":82.15,"UHH":77.54,"HLS":14.62,"RLS":11.43,"Pengeluaran":13619},
+    {"Wilayah":"Kab. Sukoharjo","Tahun":2024,"IPM":79.30,"UHH":78.01,"HLS":13.92,"RLS":10.01,"Pengeluaran":12758},
+    {"Wilayah":"Kab. Klaten","Tahun":2024,"IPM":78.16,"UHH":77.31,"HLS":13.43,"RLS":9.29,"Pengeluaran":13513},
+    {"Wilayah":"Kab. Karanganyar","Tahun":2024,"IPM":78.11,"UHH":77.91,"HLS":13.73,"RLS":9.26,"Pengeluaran":12732},
+    {"Wilayah":"Kota Tegal","Tahun":2024,"IPM":77.50,"UHH":75.01,"HLS":13.25,"RLS":9.28,"Pengeluaran":14358},
+    {"Wilayah":"Kab. Kudus","Tahun":2024,"IPM":77.21,"UHH":77.07,"HLS":13.28,"RLS":9.35,"Pengeluaran":12533},
+    {"Wilayah":"Kota Pekalongan","Tahun":2024,"IPM":77.21,"UHH":74.79,"HLS":12.89,"RLS":9.34,"Pengeluaran":14547},
+    {"Wilayah":"Kab. Boyolali","Tahun":2024,"IPM":75.96,"UHH":76.44,"HLS":12.67,"RLS":8.17,"Pengeluaran":14195},
+    {"Wilayah":"Kab. Semarang","Tahun":2024,"IPM":75.67,"UHH":76.15,"HLS":13.06,"RLS":8.16,"Pengeluaran":13377},
+    {"Wilayah":"Kab. Sragen","Tahun":2024,"IPM":75.53,"UHH":76.18,"HLS":12.93,"RLS":7.88,"Pengeluaran":13890},
+    {"Wilayah":"Kab. Purworejo","Tahun":2024,"IPM":75.16,"UHH":75.64,"HLS":13.55,"RLS":8.65,"Pengeluaran":11584},
+    {"Wilayah":"Kab. Demak","Tahun":2024,"IPM":74.57,"UHH":75.79,"HLS":13.36,"RLS":8.28,"Pengeluaran":11591},
+    {"Wilayah":"Kab. Banyumas","Tahun":2024,"IPM":74.52,"UHH":74.34,"HLS":13.34,"RLS":7.91,"Pengeluaran":12960},
+    {"Wilayah":"Kab. Kendal","Tahun":2024,"IPM":74.34,"UHH":74.73,"HLS":13.00,"RLS":7.74,"Pengeluaran":13277},
+    {"Wilayah":"Kab. Jepara","Tahun":2024,"IPM":74.32,"UHH":76.21,"HLS":12.86,"RLS":8.27,"Pengeluaran":11729},
+    {"Wilayah":"Kab. Pati","Tahun":2024,"IPM":74.10,"UHH":76.56,"HLS":12.98,"RLS":7.82,"Pengeluaran":11829},
+    {"Wilayah":"Kab. Cilacap","Tahun":2024,"IPM":72.55,"UHH":74.97,"HLS":12.69,"RLS":7.40,"Pengeluaran":11868},
+    {"Wilayah":"Kab. Wonogiri","Tahun":2024,"IPM":72.54,"UHH":76.82,"HLS":12.61,"RLS":7.68,"Pengeluaran":10634},
+    {"Wilayah":"Kab. Rembang","Tahun":2024,"IPM":72.53,"UHH":74.98,"HLS":12.30,"RLS":7.73,"Pengeluaran":11830},
+    {"Wilayah":"Kab. Kebumen","Tahun":2024,"IPM":72.48,"UHH":75.22,"HLS":13.39,"RLS":7.87,"Pengeluaran":10176},
+    {"Wilayah":"Kab. Magelang","Tahun":2024,"IPM":72.10,"UHH":74.68,"HLS":12.62,"RLS":7.83,"Pengeluaran":10926},
+    {"Wilayah":"Kab. Grobogan","Tahun":2024,"IPM":72.02,"UHH":75.25,"HLS":12.48,"RLS":7.29,"Pengeluaran":11548},
+    {"Wilayah":"Kab. Pekalongan","Tahun":2024,"IPM":71.95,"UHH":74.25,"HLS":12.46,"RLS":7.48,"Pengeluaran":11701},
+    {"Wilayah":"Kab. Temanggung","Tahun":2024,"IPM":71.86,"UHH":75.94,"HLS":12.62,"RLS":7.53,"Pengeluaran":10519},
+    {"Wilayah":"Kab. Tegal","Tahun":2024,"IPM":71.70,"UHH":74.25,"HLS":12.96,"RLS":7.36,"Pengeluaran":10972},
+    {"Wilayah":"Kab. Blora","Tahun":2024,"IPM":71.42,"UHH":74.92,"HLS":12.60,"RLS":7.26,"Pengeluaran":10926},
+    {"Wilayah":"Kab. Purbalingga","Tahun":2024,"IPM":70.97,"UHH":74.19,"HLS":12.03,"RLS":7.36,"Pengeluaran":11343},
+    {"Wilayah":"Kab. Batang","Tahun":2024,"IPM":70.73,"UHH":75.01,"HLS":12.17,"RLS":7.08,"Pengeluaran":10919},
+    {"Wilayah":"Kab. Wonosobo","Tahun":2024,"IPM":70.63,"UHH":74.25,"HLS":11.81,"RLS":6.90,"Pengeluaran":11980},
+    {"Wilayah":"Kab. Brebes","Tahun":2024,"IPM":70.18,"UHH":74.18,"HLS":12.45,"RLS":6.41,"Pengeluaran":11389},
+    {"Wilayah":"Kab. Banjarnegara","Tahun":2024,"IPM":69.62,"UHH":74.70,"HLS":11.83,"RLS":6.87,"Pengeluaran":10595},
+    {"Wilayah":"Kab. Pemalang","Tahun":2024,"IPM":68.65,"UHH":74.23,"HLS":12.02,"RLS":6.56,"Pengeluaran":10017}
+]
+
+df = pd.DataFrame(list_data)
+df.sort_values(by=["Tahun", "IPM"], ascending=[False, False], inplace=True)
+df.to_csv("database_ipm.csv", index=False)
+data_json = df.to_json(orient="records")
+
+# ==============================================================================
+# 2. GENERATE HASIL_GENERATE.HTML DENGAN DATA RESMI BPS & LEAFLET MAP
+# ==============================================================================
+
+html_template = f"""<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Indeks Pembangunan Manusia (IPM) 2025</title>
+  
+  <!-- CDN Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS untuk Peta Interaktif -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Editorial Navbar -->
+  <header class="navbar navbar-expand-lg navbar-editorial px-4 py-2">
+    <div class="container-fluid p-0 d-flex justify-content-between align-items-center">
+      <span class="navbar-brand fw-bold d-flex align-items-center gap-2 logo-brand">
+        <em>WebStat</em> · BPS Jawa Tengah
+      </span>
+      <div class="d-flex align-items-center gap-3">
+        <span class="navbar-text small d-none d-md-inline">
+          UTS Pemrograman Web Statistika · Kelompok 2
+        </span>
+        <button id="themeToggleBtn" class="btn btn-theme-toggle" type="button" title="Ganti Tema">
+          <span id="themeIcon">☀️</span> <span id="themeText">Mode Terang</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container-fluid px-4 pb-5 pt-3">
+
+    <!-- Header Banner dengan Sentuhan Editorial Portofolio -->
+    <section class="hero-banner text-white p-4 p-md-5 shadow-sm mb-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+          <span class="section-label text-white-50">Laporan Resmi Analisis Data BPS</span>
+          <h2 class="fw-bold m-0 mt-1">Indeks Pembangunan Manusia <em>Jawa Tengah</em></h2>
+          <p class="m-0 mt-2 opacity-75 fs-6" style="max-width: 680px;">
+            Komparasi multivariat 35 Kabupaten/Kota mencakup dimensi Umur Harapan Hidup, Harapan & Rata-rata Lama Sekolah, serta Pengeluaran Riil.
+          </p>
+        </div>
+        <div class="bg-black bg-opacity-25 p-3 rounded-4 border border-white border-opacity-10">
+          <label class="form-label small m-0 me-2 fw-semibold d-block mb-1 text-white-50">Pilih Periode:</label>
+          <select id="yearFilter" class="form-select form-select-sm d-inline-block w-auto fw-bold">
+            <option value="2025" selected>Tahun 2025</option>
+            <option value="2024">Tahun 2024</option>
+            <option value="ALL">Gabungan (2024–2025)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI Cards Row (5 Metrik Utama Termasuk Pertumbuhan Tercepat) -->
+    <div class="mb-2">
+      <span class="section-label">Indikator Kunci Provinsi</span>
+    </div>
+    <div class="row g-3 mb-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5">
+      <div class="col">
+        <div class="card card-kpi border-0 shadow-sm p-3 h-100">
+          <span class="kpi-label">TOTAL WILAYAH</span>
+          <h3 class="fw-bold text-kpi-total my-1" id="kCount">35 Kab/Kota</h3>
+          <div class="kpi-subtext">Provinsi Jawa Tengah</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card card-kpi border-0 shadow-sm p-3 h-100">
+          <span class="kpi-label">RATA-RATA IPM</span>
+          <h3 class="fw-bold text-kpi-avg my-1" id="kAvg">75.05</h3>
+          <div class="kpi-subtext">Skor Rata-rata Jateng</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card card-kpi border-0 shadow-sm p-3 h-100">
+          <span class="kpi-label">IPM TERTINGGI</span>
+          <h3 class="fw-bold text-kpi-max my-1" id="kMax">86.23</h3>
+          <div class="kpi-subtext text-truncate" id="kMaxName">Kota Salatiga</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card card-kpi border-0 shadow-sm p-3 h-100">
+          <span class="kpi-label">IPM TERENDAH</span>
+          <h3 class="fw-bold text-kpi-min my-1" id="kMin">69.47</h3>
+          <div class="kpi-subtext text-truncate" id="kMinName">Kab. Pemalang</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card card-kpi border-0 shadow-sm p-3 h-100">
+          <span class="kpi-label">PERTUMBUHAN TERCEPAT</span>
+          <h3 class="fw-bold text-kpi-growth my-1" id="kGrowth">+1.00</h3>
+          <div class="kpi-subtext text-truncate" id="kGrowthName">Kab. Brebes (2024→2025)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kotak Temuan Kunci / Key Insights (Data Storytelling Otomatis) -->
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm p-4 insights-box">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <span class="section-label">Data Storytelling & Ringkasan Eksekutif</span>
+              <h5 class="fw-bold m-0 d-flex align-items-center gap-2">
+                <span>💡</span> Temuan Kunci & Analisis Pertumbuhan Wilayah
+              </h5>
+            </div>
+            <span class="badge badge-cat badge-st small">
+              Tahun <span id="insightYearLabel">2025</span>
+            </span>
+          </div>
+          <div class="row g-3" id="insightsContainer">
+            <!-- Diisi secara otomatis oleh app.js updateKeyInsights() -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualizations Row 1: Top 10 & Distribusi Kategori -->
+    <div class="mb-2">
+      <span class="section-label">Distribusi & Peringkat Capaian</span>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <h6 class="fw-bold mb-3" id="barTitle">Top 10 IPM Kabupaten/Kota di Jawa Tengah</h6>
+          <div class="chart-container" style="position: relative; height:280px;">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <h6 class="fw-bold mb-3">Distribusi Kategori IPM</h6>
+          <div class="chart-container d-flex justify-content-center" style="position: relative; height:280px;">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualizations Row 2: Radar Chart Head-to-Head & Scatter Plot Korelasi Regresi -->
+    <div class="mb-2">
+      <span class="section-label">Analisis Multivariat & Hubungan Indikator</span>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h6 class="fw-bold m-0 d-flex align-items-center gap-2">
+                <span>🕸️</span> Komparasi Head-to-Head (Radar 4 Dimensi)
+              </h6>
+              <small class="text-muted">Perbandingan multivariat komponen pembentuk IPM</small>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+              <select id="radarWilayahA" class="form-select form-select-sm w-auto fw-semibold"></select>
+              <span class="text-muted small fw-bold">VS</span>
+              <select id="radarWilayahB" class="form-select form-select-sm w-auto fw-semibold"></select>
+            </div>
+          </div>
+          <div class="chart-container" style="position: relative; height:320px;">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+            <div>
+              <h6 class="fw-bold m-0 d-flex align-items-center gap-2">
+                <span>📈</span> Analisis Korelasi & Garis Regresi Linear
+              </h6>
+              <small class="text-muted" id="scatterSubtitle">Pengeluaran vs Indeks Pembangunan Manusia (IPM 2025)</small>
+            </div>
+            <div>
+              <select id="scatterMetricX" class="form-select form-select-sm w-auto fw-semibold">
+                <option value="Pengeluaran" selected>Sumbu X: Pengeluaran Riil</option>
+                <option value="UHH">Sumbu X: Umur Harapan Hidup (UHH)</option>
+                <option value="HLS">Sumbu X: Harapan Lama Sekolah (HLS)</option>
+                <option value="RLS">Sumbu X: Rata-rata Lama Sekolah (RLS)</option>
+              </select>
+            </div>
+          </div>
+          <div class="d-flex gap-2 align-items-center mb-3 small flex-wrap">
+            <span class="badge bg-secondary-subtle text-body border px-3 py-1 rounded-pill">Koefisien Korelasi: <strong id="corrR">r = 0.00</strong></span>
+            <span class="badge bg-secondary-subtle text-body border px-3 py-1 rounded-pill">Determinasi (R²): <strong id="corrR2">0.0%</strong></span>
+            <span id="corrStatus" class="badge badge-cat badge-st">Korelasi Sangat Kuat</span>
+          </div>
+          <div class="chart-container" style="position: relative; height:280px;">
+            <canvas id="scatterChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Peta Interaktif Jawa Tengah dengan Gelembung Data Wilayah & Layer Indikator -->
+    <div class="mb-2">
+      <span class="section-label">Geospasial & Sebaran Wilayah</span>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h6 class="fw-bold m-0 d-flex align-items-center gap-2">
+                <span>🗺️</span> Peta Sebaran Capaian Pembangunan Jawa Tengah (35 Kabupaten/Kota)
+              </h6>
+              <small class="text-muted">Klik gelembung wilayah untuk membuka profil lengkap & komparasi</small>
+            </div>
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+              <div class="d-flex align-items-center gap-2 small">
+                <span class="d-flex align-items-center gap-1"><span class="map-legend-dot" style="background:#5c7a57;"></span> Sangat Tinggi (≥80)</span>
+                <span class="d-flex align-items-center gap-1"><span class="map-legend-dot" style="background:#c8963e;"></span> Tinggi (70-79)</span>
+                <span class="d-flex align-items-center gap-1"><span class="map-legend-dot" style="background:#b85d43;"></span> Sedang (&lt;70)</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <label class="small text-muted fw-bold m-0">Layer:</label>
+                <select id="mapMetric" class="form-select form-select-sm w-auto fw-semibold">
+                  <option value="IPM" selected>🎯 Indeks Pembangunan Manusia (IPM)</option>
+                  <option value="UHH">🩺 Umur Harapan Hidup (Kesehatan)</option>
+                  <option value="HLS">🎒 Harapan Lama Sekolah (Pendidikan)</option>
+                  <option value="RLS">🎓 Rata-rata Lama Sekolah (Pendidikan)</option>
+                  <option value="Pengeluaran">💰 Pengeluaran Riil (Ekonomi)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="mapJateng" style="height: 420px; width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table Row: Lengkap dengan Pencarian, Filter Kategori, & Ekspor Data -->
+    <div class="mb-2">
+      <span class="section-label">Tabulasi Data & Komponen Lengkap</span>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+            <div>
+              <h6 class="fw-bold m-0" id="tableTitle">Data IPM & Komponen Pembentuk (35 Kabupaten/Kota)</h6>
+              <small class="text-muted">Klik judul kolom (▲/▼) untuk mengurutkan data tertinggi/terendah · Klik baris wilayah untuk profil detail</small>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <button id="btnExportCsv" class="btn-action-tool" type="button" title="Unduh CSV">
+                <span>📥</span> Unduh CSV
+              </button>
+              <button id="btnPrintReport" class="btn-action-tool" type="button" title="Cetak atau Simpan PDF">
+                <span>🖨️</span> Cetak / PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Pills & Search Input Row -->
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span class="small text-muted fw-bold me-1">Filter Kategori:</span>
+              <button class="filter-pill-btn active" data-cat="ALL" type="button">Semua</button>
+              <button class="filter-pill-btn" data-cat="Sangat Tinggi" type="button">Sangat Tinggi (≥80)</button>
+              <button class="filter-pill-btn" data-cat="Tinggi" type="button">Tinggi (70-79)</button>
+              <button class="filter-pill-btn" data-cat="Sedang" type="button">Sedang (&lt;70)</button>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="text" id="searchTable" class="form-control form-control-sm form-control-editorial" placeholder="🔍 Cari nama daerah..." style="min-width: 230px;">
+            </div>
+          </div>
+
+          <div class="table-responsive" style="max-height: 440px; overflow-y: auto;">
+            <table class="table table-striped table-hover align-middle mb-0 text-center">
+              <thead class="sticky-top">
+                <tr>
+                  <th style="width: 45px;">#</th>
+                  <th class="text-start sortable-th" data-col="Wilayah" title="Klik untuk mengurutkan berdasarkan nama (A-Z / Z-A)">
+                    <span>Kabupaten / Kota</span> <span class="sort-icon" id="sort-icon-Wilayah">⇅</span>
+                  </th>
+                  <th class="sortable-th" data-col="Tahun" title="Klik untuk mengurutkan berdasarkan Tahun">
+                    <span>Tahun</span> <span class="sort-icon" id="sort-icon-Tahun">⇅</span>
+                  </th>
+                  <th class="sortable-th active-sort" data-col="IPM" title="Klik untuk mengurutkan berdasarkan Skor IPM">
+                    <span>IPM</span> <span class="sort-icon" id="sort-icon-IPM">▼</span>
+                  </th>
+                  <th class="sortable-th" data-col="UHH" title="Klik untuk mengurutkan berdasarkan Umur Harapan Hidup">
+                    <span>UHH (Thn)</span> <span class="sort-icon" id="sort-icon-UHH">⇅</span>
+                  </th>
+                  <th class="sortable-th" data-col="HLS" title="Klik untuk mengurutkan berdasarkan Harapan Lama Sekolah">
+                    <span>HLS (Thn)</span> <span class="sort-icon" id="sort-icon-HLS">⇅</span>
+                  </th>
+                  <th class="sortable-th" data-col="RLS" title="Klik untuk mengurutkan berdasarkan Rata-rata Lama Sekolah">
+                    <span>RLS (Thn)</span> <span class="sort-icon" id="sort-icon-RLS">⇅</span>
+                  </th>
+                  <th class="sortable-th" data-col="Pengeluaran" title="Klik untuk mengurutkan berdasarkan Pengeluaran Riil">
+                    <span>Pengeluaran (Ribu Rp)</span> <span class="sort-icon" id="sort-icon-Pengeluaran">⇅</span>
+                  </th>
+                  <th class="sortable-th" data-col="Kategori" title="Klik untuk mengurutkan berdasarkan Kategori Capaian">
+                    <span>Kategori</span> <span class="sort-icon" id="sort-icon-Kategori">⇅</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Detail Wilayah (Drill-Down Modal) -->
+  <div class="modal fade" id="wilayahModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="modal-title fw-bold m-0 d-flex align-items-center" id="modalWilayahTitle">Detail Wilayah</h5>
+            <small class="text-muted" id="modalWilayahRank">Peringkat di Jawa Tengah</small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom" id="modalWilayahBody">
+          <!-- Diisi otomatis oleh window.openDetailModal() di app.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center py-4 border-top text-muted small">
+    <div class="container-fluid">
+      <p class="m-0 mb-1">
+        © 2026 <strong>Kelompok 2</strong> · UTS Pemrograman Web Statistika (Data Resmi BPS Jateng Domain 3300)
+      </p>
+      <small class="opacity-75">
+        Layanan ini memanfaatkan data resmi dari WebAPI Badan Pusat Statistik (BPS) Provinsi Jawa Tengah · UHH, HLS, RLS & Pengeluaran Riil (Metode SP2020 Long Form).
+      </small>
+    </div>
+  </footer>
+
+  <!-- CDN JS Bootstrap 5, Chart.js & Leaflet JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <script>
+    window.RAW_DATASET = {data_json};
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
+"""
+
+with open("hasil_generate.html", "w", encoding="utf-8") as f:
+    f.write(html_template)
+
+print("Berhasil! File 'hasil_generate.html' resmi terhubung dengan data BPS Jawa Tengah 2024 & 2025!")
